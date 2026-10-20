@@ -1,10 +1,19 @@
-# Formatador DMR - PP5RD
+# Formatador de DMR ID - PP5RD
 
-Aplicacao web que converte a base de usuarios DMR do **radioid**
+Aplicacao que converte a base de usuarios DMR do **radioid**
 (`cbridge_user.csv`) para uma exibicao confortavel na tela do radio
 **Radtel RT-4D**.
 
-Acesse: https://danielregis81.github.io/pp5rd-dmr/
+Acesse: https://dmrid.pp5rd.com.br
+
+## Exemplo (tela do RT-4D)
+
+Resultado no display apos a formatacao - regiao/cidade legivel e sem
+caracteres que quebram a tela:
+
+![Contato da Nova Zelandia no RT-4D](img/rt4d-nzl.png)
+
+![Contato do Brasil (Piracicaba-SP) no RT-4D](img/rt4d-br.png)
 
 ## Como usar
 1. Baixe o arquivo `cbridge_user.csv` em https://radioid.net/database/dumps
