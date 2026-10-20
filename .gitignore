@@ -1,0 +1,7 @@
+# Arquivos temporarios de teste
+entrada.csv
+saida.csv
+*.tmp
+ref/
+__pycache__/
+*.pyc
