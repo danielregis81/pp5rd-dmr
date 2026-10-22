@@ -74,11 +74,13 @@ btn.addEventListener("click", async () => {
     pyodide.FS.writeFile("/app/entrada.csv", texto);
 
     log("Processando (pode levar alguns segundos para bases grandes)...");
-    // roda o formatar_dmr.py como se fosse: python formatar_dmr.py entrada.csv saida.csv
+    const idioma = (document.getElementById("idioma") || {}).value || "pt";
+    pyodide.globals.set("_idioma_sel", idioma);
+    // roda o formatar_dmr.py como: python formatar_dmr.py entrada.csv saida.csv <idioma>
     await pyodide.runPythonAsync(`
 import os, sys, runpy
 os.chdir("/app")
-sys.argv = ["formatar_dmr.py", "/app/entrada.csv", "/app/saida.csv"]
+sys.argv = ["formatar_dmr.py", "/app/entrada.csv", "/app/saida.csv", _idioma_sel]
 runpy.run_path("/app/formatar_dmr.py", run_name="__main__")
 `);
 

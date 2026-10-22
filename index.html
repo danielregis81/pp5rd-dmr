@@ -41,6 +41,13 @@
   <div class="card">
     <label for="arquivo">Arquivo base (cbridge_user.csv):</label>
     <input type="file" id="arquivo" accept=".csv,.txt">
+
+    <label for="idioma" style="margin-top:14px;">Idioma dos nomes de paises / Country names language:</label>
+    <select id="idioma" style="width:100%; padding:10px; border:1px solid #b7c0d0; border-radius:8px; background:#fafbfd;">
+      <option value="pt" selected>Portugues (ex.: Alemanha, Franca)</option>
+      <option value="en">English (e.g. Germany, France)</option>
+    </select>
+
     <button id="gerar" disabled>Carregando motor...</button>
     <div class="status" id="status">Inicializando o processador (primeira carga pode demorar)...</div>
     <div id="log"></div>

@@ -130,12 +130,19 @@ if len(sys.argv) >= 2:
         from datetime import datetime as _dt
         _pasta = os.path.dirname(os.path.abspath(ALVO))
         SAIDA = os.path.join(_pasta, _dt.now().strftime("%Y%m%d%H%M") + ".csv")
+    # Idioma dos nomes de pais: 4o argumento posicional ('pt'/'en') ou flag '--en'.
+    _IDIOMA_ARG = "pt"
+    if "--en" in sys.argv:
+        _IDIOMA_ARG = "en"
+    elif len(sys.argv) >= 4 and sys.argv[3].strip().lower() in ("pt", "en"):
+        _IDIOMA_ARG = sys.argv[3].strip().lower()
 else:
     # fallback (uso manual): nome com timestamp yyyymmddhhmm.csv
     from datetime import datetime as _dt
     ALVO = r"C:\Users\DanielRégis\Downloads\cbridge_user.csv"
     SAIDA = os.path.join(os.path.dirname(os.path.abspath(ALVO)),
                          _dt.now().strftime("%Y%m%d%H%M") + ".csv")
+    _IDIOMA_ARG = "pt"
 
 def strip_acc(s):
     # normaliza para ASCII puro (lodzkie, Shi Zhou, Moskva, c, a, s, I...)
@@ -405,6 +412,67 @@ PAIS_NOME = {
     # pais que pode aparecer em bases novas, nao presente na base de out/2026:
     "PYF": "Pol.Francesa",
 }
+
+# Nomes de pais em INGLES (ASCII, curtos p/ caber no display de 20 chars com a
+# sigla). Mesmas chaves de PAIS_NOME. Selecionado quando idioma = 'en'.
+PAIS_NOME_EN = {
+    "USA": "USA", "GBR": "United Kingdom", "DEU": "Germany", "CHN": "China",
+    "ITA": "Italy", "ESP": "Spain", "TUR": "Turkey", "BRA": "Brazil",
+    "CAN": "Canada", "POL": "Poland", "AUS": "Australia", "CHL": "Chile",
+    "FRA": "France", "RUS": "Russia", "NLD": "Netherlands", "JPN": "Japan",
+    "AUT": "Austria", "SWE": "Sweden", "KOR": "South Korea", "GRC": "Greece",
+    "ARG": "Argentina", "THA": "Thailand", "CHE": "Switzerland", "PHL": "Philippines",
+    "BEL": "Belgium", "IDN": "Indonesia", "DNK": "Denmark", "PT": "Portugal",
+    "FIN": "Finland", "NOR": "Norway", "NZL": "New Zealand", "IND": "India",
+    "ROU": "Romania", "MYS": "Malaysia", "SVN": "Slovenia", "MEX": "Mexico",
+    "CZE": "Czechia", "UKR": "Ukraine", "HUN": "Hungary", "COL": "Colombia",
+    "PRI": "Puerto Rico", "BGR": "Bulgaria", "SRB": "Serbia", "ZAF": "South Africa",
+    "HRV": "Croatia", "VEN": "Venezuela", "TWN": "Taiwan", "BIH": "Bosnia",
+    "URY": "Uruguay", "ISR": "Israel", "IRL": "Ireland", "PAN": "Panama",
+    "HKG": "Hong Kong", "DOM": "Dominican Rep.", "SVK": "Slovakia", "ECU": "Ecuador",
+    "CRI": "Costa Rica", "LUX": "Luxembourg", "BLR": "Belarus", "KAZ": "Kazakhstan",
+    "LTU": "Lithuania", "BGD": "Bangladesh", "OMN": "Oman", "EST": "Estonia",
+    "PER": "Peru", "MKD": "North Macedonia", "MAR": "Morocco", "TTO": "Trinidad",
+    "LVA": "Latvia", "CUB": "Cuba", "CYP": "Cyprus", "ARE": "UAE",
+    "MLT": "Malta", "SGP": "Singapore", "REU": "Reunion", "GTM": "Guatemala",
+    "VIR": "Virgin Is. US", "VGB": "Virgin Is. UK", "MDA": "Moldova", "MNE": "Montenegro",
+    "PRY": "Paraguay", "KWT": "Kuwait", "LBN": "Lebanon", "PAK": "Pakistan",
+    "LKA": "Sri Lanka", "BHR": "Bahrain", "AND": "Andorra", "ISL": "Iceland",
+    "GUM": "Guam", "SAU": "Saudi Arabia", "SLV": "El Salvador", "HND": "Honduras",
+    "SMR": "San Marino", "DMA": "Dominica", "GEO": "Georgia", "BRB": "Barbados",
+    "HTI": "Haiti", "CUW": "Curacao", "QAT": "Qatar", "NIC": "Nicaragua",
+    "ABW": "Aruba", "BLZ": "Belize", "UZB": "Uzbekistan", "JAM": "Jamaica",
+    "MTQ": "Martinique", "LIE": "Liechtenstein", "LCA": "St.Lucia", "GLP": "Guadeloupe",
+    "VCT": "St.Vincent", "BHS": "Bahamas", "DZA": "Algeria", "NAM": "Namibia",
+    "GIB": "Gibraltar", "KNA": "St.Kitts Nevis", "BES": "Bonaire", "NCL": "New Caledonia",
+    "VNM": "Vietnam", "JOR": "Jordan", "MUS": "Mauritius", "ARM": "Armenia",
+    "CYM": "Cayman Is.", "BMU": "Bermuda", "GRD": "Grenada", "AZE": "Azerbaijan",
+    "IRQ": "Iraq", "PNG": "Papua N.Guinea", "CIV": "Ivory Coast", "MOZ": "Mozambique",
+    "GUY": "Guyana", "FRO": "Faroe Is.", "NPL": "Nepal", "GHA": "Ghana",
+    "KEN": "Kenya", "MCO": "Monaco", "GRL": "Greenland", "IRN": "Iran",
+    "MDV": "Maldives", "BRN": "Brunei", "CPV": "Cape Verde", "KGZ": "Kyrgyzstan",
+    "FSM": "Micronesia", "ALA": "Aland Is.", "GUF": "French Guiana", "AIA": "Anguilla",
+    "MNG": "Mongolia", "MAC": "Macau", "NGA": "Nigeria", "ZMB": "Zambia",
+    "MDG": "Madagascar", "ZWE": "Zimbabwe", "FLK": "Falkland Is.", "XKX": "Kosovo",
+    "ALB": "Albania", "ATG": "Antigua", "MSR": "Montserrat", "LAO": "Laos",
+    "VUT": "Vanuatu", "WSM": "Samoa", "PLW": "Palau", "EGY": "Egypt",
+    "BFA": "Burkina Faso", "LBR": "Liberia", "TCD": "Chad", "CAF": "Centr.Afr.Rep.",
+    "CMR": "Cameroon", "TZA": "Tanzania", "LSO": "Lesotho", "SWZ": "Eswatini",
+    "BOL": "Bolivia", "SUR": "Suriname", "YEM": "Yemen", "TON": "Tonga",
+    "KIR": "Kiribati", "COK": "Cook Is.", "SEN": "Senegal", "MRT": "Mauritania",
+    "GIN": "Guinea", "TGO": "Togo", "GNQ": "Eq.Guinea", "SYC": "Seychelles",
+    "SDN": "Sudan", "DJI": "Djibouti", "MWI": "Malawi", "BWA": "Botswana",
+    "SHN": "St.Helena", "PYF": "Fr.Polynesia",
+}
+
+# Idioma dos nomes de pais na saida: 'pt' (padrao) ou 'en'. Definido via argv.
+IDIOMA_PAIS = _IDIOMA_ARG if "_IDIOMA_ARG" in dir() else "pt"
+
+def nome_pais_idioma(sigla):
+    """Nome do pais no idioma selecionado (IDIOMA_PAIS). Fallback: PT -> sigla."""
+    if IDIOMA_PAIS == "en":
+        return PAIS_NOME_EN.get(sigla) or PAIS_NOME.get(sigla, "")
+    return PAIS_NOME.get(sigla, "")
 
 def nome_pais(sigla):
     """[DESATIVADO] Retorna nome legivel do pais. NAO usar na col6: a aplicacao
@@ -1738,7 +1806,7 @@ with open(ALVO, "r", encoding="utf-8", newline="") as fin:
         # permanece na col6 (a aplicacao exige sigla la). Tenta pela sigla de
         # saida (PT/BR) e, se nao houver, pela sigla de 3 letras (cod_pais).
         if not col5:
-            col5 = PAIS_NOME.get(pais_out) or PAIS_NOME.get(cod_pais, "")
+            col5 = nome_pais_idioma(pais_out) or nome_pais_idioma(cod_pais)
         # Regra de largura do display (linha = "col5,col6", limite 20 chars).
         # Para paises != BR: se a regiao fizer a linha passar de 20, troca a
         # regiao pelo nome do pais por extenso. Se mesmo o nome por extenso
@@ -1746,7 +1814,7 @@ with open(ALVO, "r", encoding="utf-8", newline="") as fin:
         # Brasil e preservado (cidades BR ja sao abreviadas).
         if cod_pais != "BRA" and col5:
             if len(col5) + 1 + len(pais_out) > 20:
-                nome_pais = PAIS_NOME.get(pais_out) or PAIS_NOME.get(cod_pais, "")
+                nome_pais = nome_pais_idioma(pais_out) or nome_pais_idioma(cod_pais)
                 if nome_pais and (len(nome_pais) + 1 + len(pais_out) <= 20):
                     col5 = nome_pais
                 else:
