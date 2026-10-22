@@ -116,8 +116,8 @@ await micropip.install("Unidecode")
     statusEl.textContent = t("statusLoadingRules");
     // baixa o script de formatacao e a referencia, grava no FS virtual do Pyodide
     const [scriptTxt, refTxt] = await Promise.all([
-      fetch("formatar_dmr.py?v5").then(r => r.text()),
-      fetch("ref/regioes_ref.csv?v5").then(r => r.text()),
+      fetch("formatar_dmr.py?v6").then(r => r.text()),
+      fetch("ref/regioes_ref.csv?v6").then(r => r.text()),
     ]);
 
     // cria a estrutura de pastas que o script espera: ./ref/regioes_ref.csv
@@ -204,6 +204,7 @@ runpy.run_path("/app/formatar_dmr.py", run_name="__main__")
 // aplica idioma inicial (PT) e inicia
 applyLang("pt");
 init();
+
 
 
 
