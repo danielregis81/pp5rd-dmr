@@ -85,7 +85,16 @@ function applyLang(lang) {
   // botao: depende do estado atual
   if (!scriptReady) btn.textContent = t("btnLoading");
   else btn.textContent = (fileEl.files.length > 0) ? t("btnReady") : t("btnSelectFile");
+  // se o motor ja esta pronto e nada foi processado ainda, atualiza status e
+  // a mensagem inicial do log para o idioma recem-selecionado.
+  if (scriptReady && !processouAlgo) {
+    statusEl.innerHTML = t("statusReady");
+    logEl.textContent = "";
+    log(t("logReady"));
+  }
 }
+
+let processouAlgo = false;
 
 function log(msg) {
   logEl.textContent += msg + "\n";
@@ -107,8 +116,8 @@ await micropip.install("Unidecode")
     statusEl.textContent = t("statusLoadingRules");
     // baixa o script de formatacao e a referencia, grava no FS virtual do Pyodide
     const [scriptTxt, refTxt] = await Promise.all([
-      fetch("formatar_dmr.py?v3").then(r => r.text()),
-      fetch("ref/regioes_ref.csv?v3").then(r => r.text()),
+      fetch("formatar_dmr.py?v4").then(r => r.text()),
+      fetch("ref/regioes_ref.csv?v4").then(r => r.text()),
     ]);
 
     // cria a estrutura de pastas que o script espera: ./ref/regioes_ref.csv
@@ -143,6 +152,7 @@ $("uiLang").addEventListener("change", (e) => applyLang(e.target.value));
 
 btn.addEventListener("click", async () => {
   if (!scriptReady || fileEl.files.length === 0) return;
+  processouAlgo = true;
   btn.disabled = true;
   btn.textContent = t("btnProcessing");
   log(t("logReading"));
@@ -193,5 +203,6 @@ runpy.run_path("/app/formatar_dmr.py", run_name="__main__")
 // aplica idioma inicial (PT) e inicia
 applyLang("pt");
 init();
+
 
 
