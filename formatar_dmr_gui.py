@@ -148,16 +148,6 @@ class App:
         self.btn_sel = tk.Button(row, text="", command=self.selecionar)
         self.btn_sel.pack(side="left", padx=(8, 0))
 
-        # seletor de idioma dos paises
-        frm2 = tk.Frame(root)
-        frm2.pack(fill="x", padx=16, pady=(4, 6))
-        self.lbl_paislang = tk.Label(frm2, text="", font=("Segoe UI", 9, "bold"))
-        self.lbl_paislang.pack(anchor="w")
-        self.cb_paislang = ttk.Combobox(frm2, state="readonly",
-                                        values=["Portugues (Alemanha, Franca)", "English (Germany, France)"])
-        self.cb_paislang.current(0)
-        self.cb_paislang.pack(fill="x", pady=2)
-
         btnrow = tk.Frame(root)
         btnrow.pack(fill="x", padx=16, pady=8)
         self.btn = tk.Button(btnrow, text="", font=("Segoe UI", 10, "bold"),
@@ -191,7 +181,6 @@ class App:
         self.lbl_dl.config(text=self._t("dllink"))
         self.lbl_file.config(text=self._t("fileLabel"))
         self.btn_sel.config(text=self._t("selectBtn"))
-        self.lbl_paislang.config(text=self._t("countryLang"))
         self.btn.config(text=self._t("genBtn"))
         self.lbl_log.config(text=self._t("logLabel"))
 
@@ -228,7 +217,7 @@ class App:
             initialfile=sugerido, filetypes=[("CSV", "*.csv")])
         if not saida:
             return
-        idioma_pais = "en" if self.cb_paislang.current() == 1 else "pt"
+        idioma_pais = self.lang
         self.processou = True
         self.btn.config(state="disabled", text=self._t("processing"))
         threading.Thread(target=self._run, args=(entrada, saida, idioma_pais), daemon=True).start()
@@ -256,3 +245,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     App(root)
     root.mainloop()
+
