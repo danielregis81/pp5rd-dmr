@@ -9,53 +9,62 @@
   * { box-sizing: border-box; }
   body { font-family: "Segoe UI", system-ui, Arial, sans-serif; background:#f4f6f9;
          color:#222; margin:0; padding:0; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 28px 18px 60px; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 20px 18px 60px; }
   h1 { color:var(--azul); font-size: 1.7rem; margin: 6px 0 2px; }
   .sub { color:#555; font-size:.95rem; margin:0 0 2px; }
   a { color: var(--azul2); }
   .card { background:#fff; border:1px solid #e3e7ee; border-radius:10px;
           padding:20px; margin-top:18px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
   label { font-weight:600; display:block; margin-bottom:8px; }
-  input[type=file] { width:100%; padding:10px; border:1px dashed #b7c0d0;
+  input[type=file], select { width:100%; padding:10px; border:1px solid #b7c0d0;
                      border-radius:8px; background:#fafbfd; }
+  input[type=file] { border-style:dashed; }
   button { width:100%; margin-top:16px; padding:14px; font-size:1rem; font-weight:700;
            color:#fff; background:var(--azul); border:none; border-radius:8px; cursor:pointer; }
   button:disabled { background:#9fb0cc; cursor:not-allowed; }
   #log { margin-top:16px; background:#0f1115; color:#cfe3ff; font-family:Consolas,monospace;
-         font-size:.82rem; padding:12px; border-radius:8px; height:180px; overflow:auto;
+         font-size:.82rem; padding:12px; border-radius:8px; height:160px; overflow:auto;
          white-space:pre-wrap; }
   .footer { text-align:center; margin-top:22px; color:#777; font-size:.88rem; }
   .footer .call { color:var(--azul); font-weight:700; }
   .status { font-size:.9rem; color:#555; margin-top:10px; }
   .ok { color:#1e7a34; font-weight:600; }
+  .uilang { text-align:right; font-size:.85rem; }
+  .uilang select { width:auto; display:inline-block; padding:4px 8px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Formatador de DMR ID</h1>
-  <p class="sub">Converte a base do radioid (<b>cbridge_user.csv</b>) para uma exibicao
-     confortavel na tela do radio <b>Radtel RT-4D</b>.</p>
-  <p class="sub">Baixe o arquivo <b>cbridge_user.csv</b> em:
-     <a href="https://radioid.net/database/dumps" target="_blank" rel="noopener">radioid.net/database/dumps</a></p>
+  <div class="uilang">
+    <label for="uiLang" style="display:inline; font-weight:400;" data-i18n="uiLangLabel">Idioma / Language:</label>
+    <select id="uiLang">
+      <option value="pt" selected>Portugues</option>
+      <option value="en">English</option>
+    </select>
+  </div>
+
+  <h1 data-i18n="title">Formatador de DMR ID</h1>
+  <p class="sub" data-i18n="sub1"></p>
+  <p class="sub" data-i18n="sub2"></p>
 
   <div class="card">
-    <label for="arquivo">Arquivo base (cbridge_user.csv):</label>
+    <label for="arquivo" data-i18n="fileLabel"></label>
     <input type="file" id="arquivo" accept=".csv,.txt">
 
-    <label for="idioma" style="margin-top:14px;">Idioma dos nomes de paises / Country names language:</label>
-    <select id="idioma" style="width:100%; padding:10px; border:1px solid #b7c0d0; border-radius:8px; background:#fafbfd;">
-      <option value="pt" selected>Portugues (ex.: Alemanha, Franca)</option>
-      <option value="en">English (e.g. Germany, France)</option>
+    <label for="idioma" style="margin-top:14px;" data-i18n="countryLangLabel"></label>
+    <select id="idioma">
+      <option value="pt" selected data-i18n="optPt"></option>
+      <option value="en" data-i18n="optEn"></option>
     </select>
 
-    <button id="gerar" disabled>Carregando motor...</button>
-    <div class="status" id="status">Inicializando o processador (primeira carga pode demorar)...</div>
+    <button id="gerar" disabled data-i18n="btnLoading"></button>
+    <div class="status" id="status" data-i18n="statusInit"></div>
     <div id="log"></div>
   </div>
 
   <p class="sub" style="text-align:center; margin-top:16px;">
-    Prefere a versao para Windows? 
-    <a href="https://github.com/danielregis81/pp5rd-dmr/releases/latest/download/FormatadorDMR.exe">Baixar o aplicativo (.exe)</a>
+    <span data-i18n="winPrompt"></span>
+    <a href="https://github.com/danielregis81/pp5rd-dmr/releases/latest/download/FormatadorDMR.exe" data-i18n="winLink"></a>
   </p>
 
   <div class="footer">
