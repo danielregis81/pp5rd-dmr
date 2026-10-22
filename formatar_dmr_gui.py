@@ -108,6 +108,7 @@ class App:
     def __init__(self, root):
         self.root = root
         self.lang = "pt"
+        self.processou = False
         self.entrada = tk.StringVar()
         self.ui_lang = tk.StringVar(value="pt")
         self.pais_lang = tk.StringVar(value="pt")
@@ -197,6 +198,11 @@ class App:
     def _troca_ui_lang(self, event=None):
         self.lang = "en" if self.cb_uilang.current() == 1 else "pt"
         self._aplica_textos()
+        # se nada foi processado ainda, reescreve a mensagem inicial do log
+        # no idioma recem-selecionado (evita log em PT com UI em EN).
+        if not self.processou:
+            self.txt.delete("1.0", "end")
+            self.log(self._t("logReady"))
 
     def log(self, msg):
         self.txt.insert("end", msg + "\n")
@@ -223,6 +229,7 @@ class App:
         if not saida:
             return
         idioma_pais = "en" if self.cb_paislang.current() == 1 else "pt"
+        self.processou = True
         self.btn.config(state="disabled", text=self._t("processing"))
         threading.Thread(target=self._run, args=(entrada, saida, idioma_pais), daemon=True).start()
 
