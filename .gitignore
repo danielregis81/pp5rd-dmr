@@ -2,6 +2,9 @@
 entrada.csv
 saida.csv
 *.tmp
-ref/
 __pycache__/
 *.pyc
+
+# Artefatos de build do PyInstaller (o .exe vai para o Release, nao para o repo)
+build/
+dist/

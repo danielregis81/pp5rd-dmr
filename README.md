@@ -29,11 +29,25 @@ caracteres que quebram a tela:
   de cidade BR, normalizacao ASCII, expansao de UF e tratamento de valores
   genericos ("All Regions").
 
+## Versao desktop (Windows)
+
+Alem da versao web, ha um executavel para Windows (nao precisa instalar Python):
+baixe em [Releases](https://github.com/danielregis81/pp5rd-dmr/releases/latest).
+
+Para gerar o `.exe` a partir do codigo (requer Python + PyInstaller):
+
+```
+pip install pyinstaller unidecode
+pyinstaller FormatadorDMR.spec
+```
+
 ## Arquivos
-- `index.html` - interface
-- `app.js` - carrega o Pyodide e orquestra o processamento
-- `formatar_dmr.py` - logica de formatacao (compartilhada com a versao desktop)
-- `data/regioes_ref.csv` - referencia RADIO_ID -> regiao (enriquecimento)
+- `index.html` - interface web
+- `app.js` - carrega o Pyodide e orquestra o processamento no navegador
+- `formatar_dmr.py` - logica de formatacao (compartilhada web + desktop)
+- `formatar_dmr_gui.py` - interface grafica da versao desktop (Tkinter)
+- `FormatadorDMR.spec` - receita de build do executavel (PyInstaller)
+- `ref/regioes_ref.csv` - referencia RADIO_ID -> regiao (enriquecimento)
 
 ## Contato
 PP5RD - contato@pp5rd.com.br

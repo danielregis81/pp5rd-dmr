@@ -31,7 +31,7 @@ await micropip.install("Unidecode")
     // baixa o script de formatacao e a referencia, grava no FS virtual do Pyodide
     const [scriptTxt, refTxt] = await Promise.all([
       fetch("formatar_dmr.py").then(r => r.text()),
-      fetch("data/regioes_ref.csv").then(r => r.text()),
+      fetch("ref/regioes_ref.csv").then(r => r.text()),
     ]);
 
     // cria a estrutura de pastas que o script espera: ./ref/regioes_ref.csv
@@ -109,3 +109,4 @@ runpy.run_path("/app/formatar_dmr.py", run_name="__main__")
 });
 
 init();
+
