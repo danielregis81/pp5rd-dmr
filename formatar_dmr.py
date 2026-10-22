@@ -374,7 +374,7 @@ PAIS_NOME = {
     "PER": "Peru", "MKD": "Macedonia do Norte", "MAR": "Marrocos",
     "TTO": "Trinidad e Tobago", "LVA": "Letonia", "CUB": "Cuba", "CYP": "Chipre",
     "ARE": "Emirados Arabes", "MLT": "Malta", "SGP": "Singapura", "REU": "Reuniao",
-    "GTM": "Guatemala", "VIR": "Ilhas Virgens (EUA)", "MDA": "Moldova",
+    "GTM": "Guatemala", "VIR": "I.Virgens US", "VGB": "I.Virgens UK", "MDA": "Moldova",
     "MNE": "Montenegro", "PRY": "Paraguai", "KWT": "Kuwait", "LBN": "Libano",
     "PAK": "Paquistao", "LKA": "Sri Lanka", "BHR": "Bahrein", "AND": "Andorra",
     "ISL": "Islandia", "GUM": "Guam", "SAU": "Arabia Saudita", "SLV": "El Salvador",
@@ -1739,6 +1739,18 @@ with open(ALVO, "r", encoding="utf-8", newline="") as fin:
         # saida (PT/BR) e, se nao houver, pela sigla de 3 letras (cod_pais).
         if not col5:
             col5 = PAIS_NOME.get(pais_out) or PAIS_NOME.get(cod_pais, "")
+        # Regra de largura do display (linha = "col5,col6", limite 20 chars).
+        # Para paises != BR: se a regiao fizer a linha passar de 20, troca a
+        # regiao pelo nome do pais por extenso. Se mesmo o nome por extenso
+        # estourar, deixa a regiao vazia (mostra so a sigla do pais).
+        # Brasil e preservado (cidades BR ja sao abreviadas).
+        if cod_pais != "BRA" and col5:
+            if len(col5) + 1 + len(pais_out) > 20:
+                nome_pais = PAIS_NOME.get(pais_out) or PAIS_NOME.get(cod_pais, "")
+                if nome_pais and (len(nome_pais) + 1 + len(pais_out) <= 20):
+                    col5 = nome_pais
+                else:
+                    col5 = ""
         # Layout FISICO identico ao arquivo modelo (20260924_USERS_ID):
         #   col5 = regiao (BR: "Cidade - UF") ; col6 = codigo do pais ; col7 = vazio
         linhas_saida.append((int(rid), [
@@ -1770,3 +1782,4 @@ print(f"Linhas processadas: {total}")
 print(f"Contatos extras incluidos: {len(CONTATOS_EXTRAS)}")
 print(f"Total na saida: {len(linhas_saida)}")
 print(f"Saida: {SAIDA}")
+
