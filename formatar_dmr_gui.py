@@ -120,11 +120,13 @@ class App:
         toprow = tk.Frame(root)
         toprow.pack(fill="x", padx=16, pady=(8, 0))
         self.lbl_uilang = tk.Label(toprow, text="", font=("Segoe UI", 9))
-        self.lbl_uilang.pack(side="right")
         self.cb_uilang = ttk.Combobox(toprow, width=12, state="readonly",
                                       values=["Portugues", "English"], textvariable=tk.StringVar())
         self.cb_uilang.current(0)
-        self.cb_uilang.pack(side="right", padx=(0, 6))
+        # ordem: label ANTES da caixa (igual a web). Empacota o combo a direita
+        # primeiro e o label a direita depois -> label fica a esquerda do combo.
+        self.cb_uilang.pack(side="right")
+        self.lbl_uilang.pack(side="right", padx=(0, 6))
         self.cb_uilang.bind("<<ComboboxSelected>>", self._troca_ui_lang)
 
         self.lbl_title = tk.Label(root, text="", font=("Segoe UI", 14, "bold"))
