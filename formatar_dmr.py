@@ -160,6 +160,8 @@ def capitaliza_nome(s):
     s = ascii_clean(s)
     if not s:
         return s
+    if any(c.isdigit() for c in s):
+        return s  # tem numero (ex.: 9A4GL, 3Dstereo): nao e nome comum, preserva
     letras = [c for c in s if c.isalpha()]
     if letras and (all(c.isupper() for c in letras) or all(c.islower() for c in letras)):
         return re.sub(r"[A-Za-z]+", lambda m: m.group(0)[:1].upper() + m.group(0)[1:].lower(), s)
