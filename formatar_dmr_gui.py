@@ -112,7 +112,7 @@ class App:
         self.entrada = tk.StringVar()
         self.ui_lang = tk.StringVar(value="pt")
         self.pais_lang = tk.StringVar(value="pt")
-        root.title("Formatador de DMR ID - PP5RD  v1.1")
+        root.title("Formatador de DMR ID - PP5RD  v1.2")
         root.geometry("660x560")
         root.minsize(560, 460)
 

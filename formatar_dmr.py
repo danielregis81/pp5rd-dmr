@@ -153,6 +153,17 @@ def ascii_clean(s):
     remove acentos/diacriticos e caracteres especiais, mantendo o dado legivel."""
     return unidecode(s).strip()
 
+def capitaliza_nome(s):
+    """Garante que o nome comece com maiuscula. Tudo MAIUSCULO ou tudo minusculo
+    vira Title Case (por segmento, respeitando '-' e apostrofo: Jean-Pierre,
+    D'Angelo); nome misto (McDonald, DeSouza) so tem a 1a letra forcada p/ maiuscula."""
+    s = ascii_clean(s)
+    if not s:
+        return s
+    letras = [c for c in s if c.isalpha()]
+    if letras and (all(c.isupper() for c in letras) or all(c.islower() for c in letras)):
+        return re.sub(r"[A-Za-z]+", lambda m: m.group(0)[:1].upper() + m.group(0)[1:].lower(), s)
+    return s[:1].upper() + s[1:]
 # ----------------------------------------------------------------------------
 # ENRIQUECIMENTO: arquivo de referencia (RADIO_ID -> REGIAO) usado para preencher
 # a regiao (col5) quando o nosso resultado ficar VAZIO. Nunca sobrescreve o que
@@ -1824,7 +1835,7 @@ with open(ALVO, "r", encoding="utf-8", newline="") as fin:
         linhas_saida.append((int(rid), [
             rid,
             ascii_clean(callsign),
-            ascii_clean(first),
+            capitaliza_nome(first),
             "",
             ascii_clean(col5),
             pais_out,
